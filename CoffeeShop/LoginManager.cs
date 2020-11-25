@@ -12,6 +12,7 @@ namespace CoffeeShop
     {
         public string id_ { get; set; } //id 값
         public int num_ { get; set; } //사원 번호
+        public string pw_ { get; set; }  //pw
         public string name_ { get; set; }  //사람 이름
         public int type_ { get; set; }  //매니저 유무(1- 매니저, 0- 점원)
         public string logintime_ { get; set; } //로그인 시간
@@ -29,10 +30,13 @@ namespace CoffeeShop
             MySqlDataReader rdr = DBManager.GetInstance().Select(query); //db 호출
             while(rdr.Read())//로그인 성공한다면
             {
-                if(rdr["id"].ToString() == id && rdr["pw"].ToString() == pw) {
+                if(rdr["id"].ToString() == id && rdr["pw"].ToString() == pw)
+                {
+                    num_ = Int32.Parse(rdr["num"].ToString()); //사원 번호 저장
+                    id_ = rdr["id"].ToString(); //id 저장
+                    pw_ = rdr["pw"].ToString(); //pw 저장
                     name_ = rdr["name"].ToString(); //이름 저장
                     type_ = Int32.Parse(rdr["manager"].ToString()); //타입 저장
-                    num_ = Int32.Parse(rdr["num"].ToString()); //사원 번호 저장
                     logintime_ = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); 
                     rdr.Close();
                     query = "INSERT INTO CoffeeLoginLogout(userid,userlogin) VALUES("+ num_ +", '"+logintime_+"')"; 
@@ -56,5 +60,12 @@ namespace CoffeeShop
                 Program.ac.MainForm = form; //동적으로 시작 폼 변경
             }
         }
+
+        public void ChangePW_DB() //pw 변경 함수
+        {//8자 이상 / 1개 이상의 대문자, 특수문자, 숫자 포함
+
+        }
+
+
     }
 }

@@ -40,7 +40,7 @@ namespace CoffeeShop
         {
             //쿼리 작성
             string query = "SELECT * FROM CoffeeSold" +
-                " WHERE username = '" + LoginManager.GetInstance().name_ + "' AND date = '"+time+"' AND ordernumber = "+ordernumber;
+                " WHERE userid = '" + LoginManager.GetInstance().num_ + "' AND date = '"+time+"' AND ordernumber = "+ordernumber + " AND valid = 1";
             MySqlDataReader rdr = DBManager.GetInstance().Select(query); //DB에서 값을 가져옴
 
             while (rdr.Read())
@@ -54,9 +54,11 @@ namespace CoffeeShop
 
             rdr.Close();
         }
+        //수정됨
         public void getMenuData(FlowLayoutPanel f) //메뉴 버튼을 가져오는 함수
         { //커피 메뉴 추가
-            string query = "SELECT * FROM Coffee";
+            int i = 0;
+            string query = "SELECT * FROM Coffee WHERE valid = 1";
             MySqlDataReader rdr = DBManager.GetInstance().Select(query); //DB에서 값을 가져옴
             while (rdr.Read())
             {   //커피의 id,이름.가격을 주문list에 넣음
@@ -64,7 +66,8 @@ namespace CoffeeShop
                 order.Add(o);
                 //버튼 생성
                 Button b = new Button();
-                b.Name = o.id;
+                b.Name = i.ToString();
+                i++;
                 b.Click += new EventHandler(btn_Click); //클릭 리스너
                 b.Text = o.menuname;
                 f.Controls.Add(b);
@@ -83,9 +86,9 @@ namespace CoffeeShop
             int idx = checkDouble(btn.Text); //기존에 같은 커피를 주문하였는가 확인
             if (idx == -1) //기존에 주문한적 없을 때
             {
-                ListViewItem items = new ListViewItem(order[Int32.Parse(btn.Name) - 1].id); //커피 id를 넣음.
+                ListViewItem items = new ListViewItem(order[Int32.Parse(btn.Name)].id); //커피 id를 넣음.
                 items.SubItems.Add(btn.Text);   //커피 이름을 넣음.
-                items.SubItems.Add(order[Int32.Parse(btn.Name)-1].price); //커피 가격을 넣음.
+                items.SubItems.Add(order[Int32.Parse(btn.Name)].price); //커피 가격을 넣음.
                 items.SubItems.Add("1"); //개수를 1로 정함
                 listViewShowOrdertoChange.Items.Add(items); //listview에 더함
             }
@@ -110,8 +113,9 @@ namespace CoffeeShop
             return idx;
         }
 
+        //수정됨
         private void buttonChangeOK_Click(object sender, EventArgs e) //주문 수정버튼
-        {
+        { //CoffeeSold의 valid = 1 - 값 존재함, 0 - 값 수정됨 -1 - 값 삭제됨
             if (listViewShowOrdertoChange.Items.Count < 1) //아무것도 선택되지 않을 경우
             {
                 MessageBox.Show("메뉴를 선택해주세요", "확인");
@@ -119,25 +123,55 @@ namespace CoffeeShop
             }
             //delete 코드
 
-            QueryManager.Delete("CoffeeSold").Where("username = '" + LoginManager.GetInstance().name_ + "' AND date = '" + time + "' AND ordernumber = " + ordernumber).EmpExec();
-
-            //insert 코드
-
-            DataTable dt = new DataTable();
+            QueryManager.Update("CoffeeSold").Set("valid = 0").Where("userid = '" + LoginManager.GetInstance().num_ + "' AND date = '" + time + "' AND ordernumber = " + ordernumber).EmpExec();
 
             string query;
+
+            List<int> idx = new List<int>();
+            //log를 위한 이전 주문 id 가져오는 코드
+            query = "SELECT * FROM CoffeeSold WHERE userid = '" + LoginManager.GetInstance().num_ + "' AND date = '" + time + "' AND ordernumber = " + ordernumber;
+            MySqlDataReader rdr = DBManager.GetInstance().Select(query); //DB에서 값을 가져옴
+            int id = 0;
+            while (rdr.Read())
+            {
+                idx.Add(Int32.Parse(rdr["id"].ToString()));
+            }
+            rdr.Close();
+
+            //insert 코드
+            DataTable dt = new DataTable();
             
             List<string> list = new List<string>(); //주문을 기록하는 list
             foreach (ListViewItem item in listViewShowOrdertoChange.Items)
             {
-                query = ordernumber + ", '" + time + "', '" + LoginManager.GetInstance().name_; //주문번호, 시간, 이름
+                query = ordernumber + ", '" + time + "', '" + LoginManager.GetInstance().num_; //주문번호, 시간, 이름
                 query += "', " + item.SubItems[0].Text; //coffeeid
                 query += ", '" + item.SubItems[1].Text; //coffeename
                 query += "', " + item.SubItems[2].Text; //coffeeprice
                 query += ", " + item.SubItems[3].Text; //count
+                query += ", 1"; //valid
                 list.Add(query);
             }
             c.AddCoffee(list); //주문을 데이터베이스에 기록하는 함수 호출
+            
+            //log 함수 호출
+            query = "SELECT * FROM CoffeeSold WHERE userid = '" + LoginManager.GetInstance().num_ + "' AND date = '" + time + "' AND ordernumber = " + ordernumber + " AND valid = 1";
+            rdr = DBManager.GetInstance().Select(query); //DB에서 값을 가져옴
+            int i = 0;
+            while (rdr.Read())
+            {
+                id = Int32.Parse(rdr["id"].ToString());
+                //로그 저장
+                if (idx.Count <= i)
+                {
+                    //로그 저장
+                    UserLogManager.GetInstance().SetLog(3, id, id);
+                }else
+                    UserLogManager.GetInstance().SetLog(2, idx[i], id);
+                i++;
+            }
+            rdr.Close();
+
             InitVariables(); //값 초기화
             this.Close(); //부모 폼으로 돌아감
         }

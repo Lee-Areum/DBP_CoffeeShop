@@ -46,8 +46,6 @@
             this.dateTimePickerSellDate = new System.Windows.Forms.DateTimePicker();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridViewShowPastOrder = new System.Windows.Forms.DataGridView();
-            this.buttonDeleteOrder = new System.Windows.Forms.Button();
-            this.buttonChangeOrder = new System.Windows.Forms.Button();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,6 +53,9 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonDeleteOrder = new System.Windows.Forms.Button();
+            this.buttonChangeOrder = new System.Windows.Forms.Button();
+            this.buttoncasherchangePW = new System.Windows.Forms.Button();
             this.tabControlCasher.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBoxCasher.SuspendLayout();
@@ -75,7 +76,7 @@
             // labelState
             // 
             this.labelState.AutoSize = true;
-            this.labelState.Location = new System.Drawing.Point(518, 25);
+            this.labelState.Location = new System.Drawing.Point(432, 25);
             this.labelState.Name = "labelState";
             this.labelState.Size = new System.Drawing.Size(121, 12);
             this.labelState.TabIndex = 9;
@@ -254,26 +255,6 @@
             this.dataGridViewShowPastOrder.Size = new System.Drawing.Size(575, 290);
             this.dataGridViewShowPastOrder.TabIndex = 19;
             // 
-            // buttonDeleteOrder
-            // 
-            this.buttonDeleteOrder.Location = new System.Drawing.Point(604, 169);
-            this.buttonDeleteOrder.Name = "buttonDeleteOrder";
-            this.buttonDeleteOrder.Size = new System.Drawing.Size(87, 37);
-            this.buttonDeleteOrder.TabIndex = 7;
-            this.buttonDeleteOrder.Text = "삭제";
-            this.buttonDeleteOrder.UseVisualStyleBackColor = true;
-            this.buttonDeleteOrder.Click += new System.EventHandler(this.buttonDeleteOrder_Click);
-            // 
-            // buttonChangeOrder
-            // 
-            this.buttonChangeOrder.Location = new System.Drawing.Point(604, 97);
-            this.buttonChangeOrder.Name = "buttonChangeOrder";
-            this.buttonChangeOrder.Size = new System.Drawing.Size(87, 37);
-            this.buttonChangeOrder.TabIndex = 6;
-            this.buttonChangeOrder.Text = "수정";
-            this.buttonChangeOrder.UseVisualStyleBackColor = true;
-            this.buttonChangeOrder.Click += new System.EventHandler(this.buttonChangeOrder_Click);
-            // 
             // Column6
             // 
             this.Column6.FillWeight = 30F;
@@ -321,11 +302,42 @@
             this.Column5.Name = "Column5";
             this.Column5.ReadOnly = true;
             // 
+            // buttonDeleteOrder
+            // 
+            this.buttonDeleteOrder.Location = new System.Drawing.Point(604, 169);
+            this.buttonDeleteOrder.Name = "buttonDeleteOrder";
+            this.buttonDeleteOrder.Size = new System.Drawing.Size(87, 37);
+            this.buttonDeleteOrder.TabIndex = 7;
+            this.buttonDeleteOrder.Text = "삭제";
+            this.buttonDeleteOrder.UseVisualStyleBackColor = true;
+            this.buttonDeleteOrder.Click += new System.EventHandler(this.buttonDeleteOrder_Click);
+            // 
+            // buttonChangeOrder
+            // 
+            this.buttonChangeOrder.Location = new System.Drawing.Point(604, 97);
+            this.buttonChangeOrder.Name = "buttonChangeOrder";
+            this.buttonChangeOrder.Size = new System.Drawing.Size(87, 37);
+            this.buttonChangeOrder.TabIndex = 6;
+            this.buttonChangeOrder.Text = "수정";
+            this.buttonChangeOrder.UseVisualStyleBackColor = true;
+            this.buttonChangeOrder.Click += new System.EventHandler(this.buttonChangeOrder_Click);
+            // 
+            // buttoncasherchangePW
+            // 
+            this.buttoncasherchangePW.Location = new System.Drawing.Point(573, 20);
+            this.buttoncasherchangePW.Name = "buttoncasherchangePW";
+            this.buttoncasherchangePW.Size = new System.Drawing.Size(75, 23);
+            this.buttoncasherchangePW.TabIndex = 12;
+            this.buttoncasherchangePW.Text = "pw변경";
+            this.buttoncasherchangePW.UseVisualStyleBackColor = true;
+            this.buttoncasherchangePW.Click += new System.EventHandler(this.buttoncasherchangePW_Click);
+            // 
             // FormCasher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(768, 422);
+            this.Controls.Add(this.buttoncasherchangePW);
             this.Controls.Add(this.tabControlCasher);
             this.Controls.Add(this.buttonLogOut);
             this.Controls.Add(this.labelState);
@@ -371,5 +383,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.Button buttoncasherchangePW;
     }
 }

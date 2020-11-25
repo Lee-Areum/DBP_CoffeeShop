@@ -61,18 +61,26 @@ namespace CoffeeShop
                 MessageBox.Show("메뉴를 입력해주세요", "확인");
                 return;
             }
+            if (listViewShowMenu.SelectedIndices.Count == 0) //커피를 선택하지 않고 수정할 경우
+            {
+                MessageBox.Show("커피를 선택해주세요", "확인");
+                return;
+            }
             int i = 0;
             if (int.TryParse(textBoxMenuPrice.Text, out i) == false) //가격이 정수가 아닐경우
             {
                 MessageBox.Show("정수 가격을 입력해주세요", "확인");
                 return;
             }
-            if(listViewShowMenu.SelectedIndices.Count == 0) //커피를 선택하지 않고 수정할 경우
+            string pastname = listViewShowMenu.Items[listViewShowMenu.FocusedItem.Index].SubItems[1].Text;
+            string pastprice = listViewShowMenu.Items[listViewShowMenu.FocusedItem.Index].SubItems[2].Text;
+            if (textBoxMenuName.Text == pastname && textBoxMenuPrice.Text == pastprice)
             {
-                MessageBox.Show("커피를 선택해주세요", "확인");
+                MessageBox.Show("값을 수정해주세요", "확인");
                 return;
             }
-            m.ChangeMenu(textBoxMenuName.Text, Int32.Parse(textBoxMenuPrice.Text), listViewShowMenu.FocusedItem.Index + 1);
+            int idx = Int32.Parse(listViewShowMenu.Items[listViewShowMenu.FocusedItem.Index].SubItems[0].Text);
+            m.ChangeMenu(textBoxMenuName.Text, Int32.Parse(textBoxMenuPrice.Text), idx);
             InitValue(); //초기화
         }
 
@@ -89,6 +97,13 @@ namespace CoffeeShop
                 MessageBox.Show("정수 가격을 입력해주세요", "확인");
                 return;
             }
+            string pastname = listViewShowMenu.Items[listViewShowMenu.FocusedItem.Index].SubItems[1].Text;
+            string pastprice = listViewShowMenu.Items[listViewShowMenu.FocusedItem.Index].SubItems[2].Text;
+            if (textBoxMenuName.Text == pastname && textBoxMenuPrice.Text == pastprice)
+            {
+                MessageBox.Show("값을 수정해주세요", "확인");
+                return;
+            }
             m.AddMenu(textBoxMenuName.Text, Int32.Parse(textBoxMenuPrice.Text));
             InitValue(); //초기화
         }
@@ -96,8 +111,8 @@ namespace CoffeeShop
         private void listViewShowMenu_SelectedIndexChanged(object sender, EventArgs e) //menulistview의 선택이 변경될 경우
         {//값 초기화
             int idx = listViewShowMenu.FocusedItem.Index;
-            string name = listViewShowMenu.Items[idx].Text;
-            string price = listViewShowMenu.Items[idx].SubItems[1].Text;
+            string name = listViewShowMenu.Items[idx].SubItems[1].Text;
+            string price = listViewShowMenu.Items[idx].SubItems[2].Text;
             textBoxMenuName.Text = name;
             textBoxMenuPrice.Text = price;
         }
@@ -105,6 +120,18 @@ namespace CoffeeShop
         private void FormManager_FormClosing(object sender, FormClosingEventArgs e) //폼이 닫힐 경우
         {
             LoginManager.GetInstance().Logout(1); // 자동 로그아웃
+        }
+
+        private void buttonlogOK_Click(object sender, EventArgs e)
+        {
+            m.ShowtoGridLog(comboBoxshowlog,dataGridViewshowlog); //DataGridView에 띄우는 함수 호출 
+        }
+
+        private void buttonmanagerchangePW_Click(object sender, EventArgs e)
+        {
+            //Dialog폼을 띄움
+            DialogChangePW dig = new DialogChangePW(LoginManager.GetInstance().pw_);
+            dig.Show();
         }
     }
 }
