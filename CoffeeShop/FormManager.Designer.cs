@@ -65,6 +65,15 @@
             this.buttonlogOK = new System.Windows.Forms.Button();
             this.comboBoxshowlog = new System.Windows.Forms.ComboBox();
             this.dataGridViewshowlog = new System.Windows.Forms.DataGridView();
+            this.유저관리 = new System.Windows.Forms.TabPage();
+            this.buttonUserSelct = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.listViewUserManage = new System.Windows.Forms.ListView();
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             buttonmanagerchangePW = new System.Windows.Forms.Button();
             this.groupBoxManager.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShow)).BeginInit();
@@ -77,7 +86,18 @@
             this.tabPage2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewshowlog)).BeginInit();
+            this.유저관리.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // buttonmanagerchangePW
+            // 
+            buttonmanagerchangePW.Location = new System.Drawing.Point(558, 22);
+            buttonmanagerchangePW.Name = "buttonmanagerchangePW";
+            buttonmanagerchangePW.Size = new System.Drawing.Size(75, 23);
+            buttonmanagerchangePW.TabIndex = 16;
+            buttonmanagerchangePW.Text = "pw변경";
+            buttonmanagerchangePW.UseVisualStyleBackColor = true;
+            buttonmanagerchangePW.Click += new System.EventHandler(this.buttonmanagerchangePW_Click);
             // 
             // labelState
             // 
@@ -349,6 +369,7 @@
             this.tabControlManager.Controls.Add(this.tabPage3);
             this.tabControlManager.Controls.Add(this.tabPage2);
             this.tabControlManager.Controls.Add(this.tabPage4);
+            this.tabControlManager.Controls.Add(this.유저관리);
             this.tabControlManager.Location = new System.Drawing.Point(12, 51);
             this.tabControlManager.Name = "tabControlManager";
             this.tabControlManager.SelectedIndex = 0;
@@ -446,15 +467,79 @@
             this.dataGridViewshowlog.Size = new System.Drawing.Size(734, 263);
             this.dataGridViewshowlog.TabIndex = 13;
             // 
-            // buttonmanagerchangePW
+            // 유저관리
             // 
-            buttonmanagerchangePW.Location = new System.Drawing.Point(558, 22);
-            buttonmanagerchangePW.Name = "buttonmanagerchangePW";
-            buttonmanagerchangePW.Size = new System.Drawing.Size(75, 23);
-            buttonmanagerchangePW.TabIndex = 16;
-            buttonmanagerchangePW.Text = "pw변경";
-            buttonmanagerchangePW.UseVisualStyleBackColor = true;
-            buttonmanagerchangePW.Click += new System.EventHandler(this.buttonmanagerchangePW_Click);
+            this.유저관리.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.유저관리.Controls.Add(this.listViewUserManage);
+            this.유저관리.Controls.Add(this.label8);
+            this.유저관리.Controls.Add(this.buttonUserSelct);
+            this.유저관리.Location = new System.Drawing.Point(4, 22);
+            this.유저관리.Name = "유저관리";
+            this.유저관리.Padding = new System.Windows.Forms.Padding(3);
+            this.유저관리.Size = new System.Drawing.Size(746, 330);
+            this.유저관리.TabIndex = 4;
+            this.유저관리.Text = "유저관리";
+            // 
+            // buttonUserSelct
+            // 
+            this.buttonUserSelct.Location = new System.Drawing.Point(579, 72);
+            this.buttonUserSelct.Name = "buttonUserSelct";
+            this.buttonUserSelct.Size = new System.Drawing.Size(92, 55);
+            this.buttonUserSelct.TabIndex = 0;
+            this.buttonUserSelct.Text = "button1";
+            this.buttonUserSelct.UseVisualStyleBackColor = true;
+            this.buttonUserSelct.Click += new System.EventHandler(this.buttonUserSelct_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(61, 23);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "유저확인";
+            // 
+            // listViewUserManage
+            // 
+            this.listViewUserManage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader8,
+            this.columnHeader7});
+            this.listViewUserManage.FullRowSelect = true;
+            this.listViewUserManage.HideSelection = false;
+            this.listViewUserManage.Location = new System.Drawing.Point(63, 49);
+            this.listViewUserManage.Name = "listViewUserManage";
+            this.listViewUserManage.Size = new System.Drawing.Size(446, 249);
+            this.listViewUserManage.TabIndex = 18;
+            this.listViewUserManage.UseCompatibleStateImageBehavior = false;
+            this.listViewUserManage.View = System.Windows.Forms.View.Details;
+            this.listViewUserManage.SelectedIndexChanged += new System.EventHandler(this.listViewUserManage_SelectedIndexChanged);
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "유저번호";
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "id";
+            this.columnHeader5.Width = 77;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "이름";
+            this.columnHeader6.Width = 77;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "상태";
+            this.columnHeader7.Width = 150;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "직책";
+            this.columnHeader8.Width = 77;
             // 
             // FormManager
             // 
@@ -482,6 +567,8 @@
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewshowlog)).EndInit();
+            this.유저관리.ResumeLayout(false);
+            this.유저관리.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -524,6 +611,15 @@
         private System.Windows.Forms.Button buttonlogOK;
         private System.Windows.Forms.ComboBox comboBoxshowlog;
         private System.Windows.Forms.DataGridView dataGridViewshowlog;
+        private System.Windows.Forms.TabPage 유저관리;
+        private System.Windows.Forms.Button buttonUserSelct;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ListView listViewUserManage;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
     }
 }
 

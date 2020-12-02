@@ -165,5 +165,79 @@ namespace CoffeeShop
             }
         }
 
+        #region 유저관리 탭
+
+        public void ShowListUserManage(ListView v)
+        {
+            v.Items.Clear();
+            v.BeginUpdate(); //업데이트 시작
+            string query = "SELECT * FROM CoffeeUser";
+            MySqlDataReader rdr = DBManager.GetInstance().Select(query); //DB에서 값을 가져옴
+            while (rdr.Read())
+            {
+                ListViewItem items = new ListViewItem(rdr["num"].ToString()); //사용자의 순서번호를 가져옴.
+                items.SubItems.Add(rdr["id"].ToString()); //사용자의 id을 가져옴.
+                items.SubItems.Add(rdr["name"].ToString()); //사용자의 이름을 가져옴.
+                string str = "점원";
+                if (Int32.Parse(rdr["manager"].ToString()) == 1) str = "관리자";
+                items.SubItems.Add(str); //사용자의 id을 가져옴.
+                switch (Int32.Parse(rdr["valid"].ToString()))
+                {
+                    case 0: //승인 대기중인 사용자
+                        str = "승인 대기중";
+                        break;
+                    case 1: //승인완료된 사용자
+                        str = "-";
+                        break;
+                    case -1: //로그인 제한된 사용자
+                        str = "로그인 제한됨";
+                        break;
+                    default:
+                        str = "";
+                        break; 
+                }
+                items.SubItems.Add(str); //사용자의 id을 가져옴.
+                v.Items.Add(items); //item을 넣음.
+            }
+            rdr.Close();
+            v.EndUpdate(); //업데이트 종료
+        }
+
+        public void ChangeButtonName(ListView v, Button b, int idx)
+        {//버튼의 이름을 변경하는 함수
+            string query = "SELECT * FROM CoffeeUser WHERE num = " + v.Items[idx].SubItems[0].Text;
+            MySqlDataReader rdr = DBManager.GetInstance().Select(query); //DB에서 값을 가져옴
+            while (rdr.Read())
+            {
+                switch(Int32.Parse(rdr["valid"].ToString())){
+                    case 0: //승인 대기중인 사용자
+                        b.Text = "가입 승인";
+                        break;
+                    case 1: //승인완료된 사용자
+                        b.Text = "로그인 제한";
+                        break;
+                    case -1: //로그인 제한된 사용자
+                        b.Visible = false;
+                        break;
+                }
+            }
+        }
+
+        public void ChangeUserState(ListView v, Button b, int idx)
+        {//상태 변경하는 함수
+            int valid = 1;
+            if(b.Text == "가입 승인") //가입 승인일 경우
+            {
+                valid = 1;
+            }else if(b.Text == "로그인 제한") //로그인 제한일 우
+            {
+                valid = -1;
+            }
+            QueryManager.Update("CoffeeUser").Set("valid = " + valid).Where("num = "+ v.Items[idx].SubItems[0].Text).Exec();
+            MessageBox.Show("적용되었습니다.","확인");
+        }
+
+        #endregion
+
     }
 }

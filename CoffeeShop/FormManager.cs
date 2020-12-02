@@ -36,6 +36,10 @@ namespace CoffeeShop
             m.ShowtolistViewMenu(listViewShowMenu);
             textBoxMenuName.Text = "";
             textBoxMenuPrice.Text = "";
+            //유저관리 부분
+            m.ShowListUserManage(listViewUserManage);
+            buttonUserSelct.Visible = false; //버튼 안보이게 설정
+
         }
 
         private void buttonLogOut_Click(object sender, EventArgs e) //로그아웃 버튼 클릭시
@@ -133,5 +137,21 @@ namespace CoffeeShop
             DialogChangePW dig = new DialogChangePW(LoginManager.GetInstance().pw_);
             dig.Show();
         }
+
+        #region 유저관리 탭
+        private void buttonUserSelct_Click(object sender, EventArgs e) //버튼이 클릭된 경우
+        {
+            int idx = listViewUserManage.FocusedItem.Index; //선택된 INDEX 확인
+            m.ChangeUserState(listViewUserManage, buttonUserSelct, idx); //DB에 적용
+            m.ShowListUserManage(listViewUserManage); //새로고침
+        }
+        
+        private void listViewUserManage_SelectedIndexChanged(object sender, EventArgs e) //index가 변경된 경우 
+        {
+            buttonUserSelct.Visible = true; //버튼 보이게 설정
+            int idx = listViewUserManage.FocusedItem.Index; //선택된 INDEX 확인
+            m.ChangeButtonName(listViewUserManage, buttonUserSelct, idx); //버튼 이름 수정
+        }
+        #endregion
     }
 }

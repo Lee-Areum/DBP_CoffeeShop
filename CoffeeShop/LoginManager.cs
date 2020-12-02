@@ -26,7 +26,7 @@ namespace CoffeeShop
         {
             //   string query = "SELECT * FROM CoffeeUser WHERE id = '" //select 쿼리
             //     + id + "'AND pw = 'AES_DECRYPT(UNHEX(" + pw + ",'dblogin'))'"; 
-            string query = "select num,id, cast(AES_DECRYPT(UNHEX(pw), 'dblogin') as char(10000)character set utf8) AS pw,name,manager FROM CoffeeUser";
+            string query = "select num,id, cast(AES_DECRYPT(UNHEX(pw), 'dblogin') as char(10000)character set utf8) AS pw,name,manager,valid FROM CoffeeUser";
             MySqlDataReader rdr = DBManager.GetInstance().Select(query); //db 호출
             while(rdr.Read())//로그인 성공한다면
             {
@@ -37,6 +37,13 @@ namespace CoffeeShop
                     pw_ = rdr["pw"].ToString(); //pw 저장
                     name_ = rdr["name"].ToString(); //이름 저장
                     type_ = Int32.Parse(rdr["manager"].ToString()); //타입 저장
+                    if(Int32.Parse(rdr["valid"].ToString()) == -1)
+                    {
+                        return 2;
+                    }else if(Int32.Parse(rdr["valid"].ToString()) == 0)
+                    {
+                        return 3;
+                    }
                     logintime_ = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); 
                     rdr.Close();
                     query = "INSERT INTO CoffeeLoginLogout(userid,userlogin) VALUES("+ num_ +", '"+logintime_+"')"; 
@@ -60,12 +67,5 @@ namespace CoffeeShop
                 Program.ac.MainForm = form; //동적으로 시작 폼 변경
             }
         }
-
-        public void ChangePW_DB() //pw 변경 함수
-        {//8자 이상 / 1개 이상의 대문자, 특수문자, 숫자 포함
-
-        }
-
-
     }
 }
