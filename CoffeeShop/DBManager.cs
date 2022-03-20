@@ -12,8 +12,6 @@ namespace CoffeeShop
     class DBManager
     {
         //서버 주소
-        private string strConn = "Server=49.50.174.201;Database =s5532883;Uid=s5532883;pwd=s5532883;Charset=utf8";
-
         //singleton을 위한 처리
         private static DBManager instance = new DBManager(); //객체 생성
         public static DBManager GetInstance() { return instance; } //객체를 리턴
